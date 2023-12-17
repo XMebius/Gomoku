@@ -34,7 +34,6 @@ class Move {
     private int y;
     private int role; // 人类白棋，1为白棋，2为黑棋（AI）
 
-    // 确保有适当的 setter 方法
     public int[] getPos() {
         int[] pos = new int[2];
         pos[0] = this.x;
