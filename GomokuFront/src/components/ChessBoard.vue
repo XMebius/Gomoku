@@ -2,18 +2,12 @@
  * @Author: Yixuan Chen 2152824@tongji.edu.cn
  * @Date: 2023-12-12 08:44:56
  * @LastEditors: Yixuan Chen 2152824@tongji.edu.cn
- * @LastEditTime: 2023-12-16 19:48:55
- * @FilePath: \chess\src\components\ChessBoard.vue
+ * @LastEditTime: 2023-12-19 14:53:56
+ * @FilePath: \GomokuFront\src\components\ChessBoard.vue
  * @Description: 处理渲染棋盘，并处理棋子的放置
  * 
  * Copyright (c) 2023 by YixuanChen 2152824@tongji.edu.cn, All Rights Reserved. 
 -->
-<template>
-  <div class="chessboard">
-    <canvas ref="canvas" width="380" height="380" @click="placePiece"></canvas>
-  </div>
-</template>
-
 <script>
 import { ref, onMounted } from 'vue'
 import bakImage from '../assets/bak.jpg'
@@ -98,10 +92,17 @@ export default {
 }
 </script>
 
+<template>
+  <div class="chessboard">
+    <TitleBlock />
+    <canvas ref="canvas" width="380" height="380" @click="placePiece"></canvas>
+  </div>
+</template>
+
 <style scoped>
 .chessboard {
-  /* 这里添加样式 */
   z-index: 10;
   opacity: 0.72;
+  order: 2; /* 显示顺序 */
 }
 </style>

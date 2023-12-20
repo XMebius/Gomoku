@@ -2,8 +2,8 @@
  * @Author: Yixuan Chen 2152824@tongji.edu.cn
  * @Date: 2023-12-05 08:28:14
  * @LastEditors: Yixuan Chen 2152824@tongji.edu.cn
- * @LastEditTime: 2023-12-16 21:18:28
- * @FilePath: \Gomoku\GomokuFront\src\views\HomePage.vue
+ * @LastEditTime: 2023-12-19 16:59:50
+ * @FilePath: \GomokuFront\src\views\HomePage.vue
  * @Description: 渲染出棋盘，实现落子功能，将落子的坐标传给后端
  * 
  * Copyright (c) 2023 by YixuanChen 2152824@tongji.edu.cn, All Rights Reserved. 
@@ -15,17 +15,11 @@ import axios from 'axios'
 import ChessBoard from '../components/ChessBoard.vue'
 import ChessInfo from '../components/ChessInfo.vue'
 import BackGround from '../components/BackGround.vue'
+import CodeDiagram from '../components/CodeDiagram.vue'
+import DevelopNote from '../components/DevelopNote.vue'
 
 const chessInfo = ref([]) // 用于存储棋盘信息
-const boardStyle = ref({}) // 定义棋盘样式
 const chessBoardRef = ref(null) // 用于获取棋盘组件的引用
-
-boardStyle.value = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)'
-}
 
 const handlePiecePlaced = async data => {
   // 前端更新棋子信息
@@ -60,23 +54,39 @@ const handlePiecePlaced = async data => {
 </script>
 
 <template>
-  <div class="page-container">
+  <div>
     <BackGround />
-    <ChessInfo :info="chessInfo" />
-    <ChessBoard ref="chessBoardRef" @piece-placed="handlePiecePlaced" :style="boardStyle" />
+  </div>
+  <div class="whole-page-container">
+    <CodeDiagram />
+    <div class="middle-page-container">
+      <ChessInfo :info="chessInfo" />
+      <ChessBoard ref="chessBoardRef" @piece-placed="handlePiecePlaced" />
+    </div>
+    <DevelopNote />
   </div>
 </template>
 
 <style scoped lang="scss">
-.page-container {
+.middle-page-container {
   display: flex;
-  flex-direction: row; /*水平排列子元素*/
-  // justify-content: center;
-  align-items: stretch;
-  height: 100vh; /* 确保容器有高度 */
+  justify-content: center;
+  align-items: center;
+  gap: 10px; /* 两列之间的间隔 */
+  height: 110vh;
+  width: auto;
+  margin: 0;
 }
-
+.whole-page-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px; /* 两列之间的间隔 */
+  height: 100vh;
+  width: 100%;
+  margin: 0;
+}
 canvas {
-  border: 1px solid #000; /* 临时添加边框以确认canvas位置 */
+  border: 1px solid #000;
 }
 </style>
