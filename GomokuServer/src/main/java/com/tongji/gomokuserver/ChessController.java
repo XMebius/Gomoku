@@ -29,13 +29,13 @@ public class ChessController {
         return ResponseEntity.ok().body(aiMove);    // 返回AI的下一步棋
     }
 
-//    @PostMapping("/api/chess/difficulty")
-//    public ResponseEntity<?> handleDifficultySetting(@RequestBody Map<String, Integer> difficultyMap) {
-//        int difficulty = difficultyMap.getOrDefault("difficulty", 1); // 默认难度为1
-//        System.out.println("Difficulty received: " + difficulty);
-//        gameService.setDifficulty(difficulty);
-//        return ResponseEntity.ok().body("难度设置成功");
-//    }
+    @PostMapping("/api/chess/difficulty")
+    public ResponseEntity<?> handleDifficultySetting(@RequestBody Map<String, Integer> difficultyMap) {
+        int difficulty = difficultyMap.getOrDefault("difficulty", 1); // 默认难度为1
+        System.out.println("Difficulty received: " + difficulty);
+        gameService.setDifficulty(difficulty);
+        return ResponseEntity.ok().body("难度设置成功");
+    }
 }
 
 class Move {

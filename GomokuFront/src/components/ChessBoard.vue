@@ -2,7 +2,7 @@
  * @Author: Yixuan Chen 2152824@tongji.edu.cn
  * @Date: 2023-12-12 08:44:56
  * @LastEditors: Yixuan Chen 2152824@tongji.edu.cn
- * @LastEditTime: 2023-12-22 20:31:33
+ * @LastEditTime: 2023-12-22 20:55:39
  * @FilePath: \GomokuFront\src\components\ChessBoard.vue
  * @Description: 处理渲染棋盘，并处理棋子的放置
  * 
@@ -48,9 +48,9 @@ export default {
     }
 
     const placePiece = event => {
-      // if (!isGameStarted.value) {
-      //   return // 如果游戏未开始，不执行任何操作
-      // }
+      if (!isGameStarted.value) {
+        return
+      }
       const ctx = canvas.value.getContext('2d')
       const { x, y } = getCanvasPos(event)
       // 根据点击位置计算棋盘位置
@@ -89,6 +89,7 @@ export default {
 
     const startGame = () => {
       isGameStarted.value = true
+      console.log('Game started!')
       alert('游戏已开始，你执白棋')
     }
 
@@ -109,16 +110,14 @@ export default {
       }
 
       console.log('难度设置为:', difficultyValue)
-
-      // 发送难度设置到后端
-      // axios
-      //   .post('http://localhost:8080/api/chess/difficulty', { difficulty: difficultyValue })
-      //   .then(response => {
-      //     console.log('难度设置成功:', response.data)
-      //   })
-      //   .catch(error => {
-      //     console.error('难度设置失败:', error)
-      //   })
+      axios
+        .post('http://localhost:8080/api/chess/difficulty', { difficulty: difficultyValue })
+        .then(response => {
+          console.log('难度设置成功:', response.data)
+        })
+        .catch(error => {
+          console.error('难度设置失败:', error)
+        })
     }
 
     return {
