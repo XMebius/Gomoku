@@ -9,10 +9,12 @@
  * Copyright (c) 2023 by YixuanChen 2152824@tongji.edu.cn, All Rights Reserved. 
 -->
 <script>
+// import { ref } from 'vue'
+
 export default {
   props: {
     info: Array
-  }
+  },
 }
 </script>
 

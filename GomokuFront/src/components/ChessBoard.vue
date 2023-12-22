@@ -2,7 +2,7 @@
  * @Author: Yixuan Chen 2152824@tongji.edu.cn
  * @Date: 2023-12-12 08:44:56
  * @LastEditors: Yixuan Chen 2152824@tongji.edu.cn
- * @LastEditTime: 2023-12-22 20:55:39
+ * @LastEditTime: 2023-12-22 23:30:05
  * @FilePath: \GomokuFront\src\components\ChessBoard.vue
  * @Description: 处理渲染棋盘，并处理棋子的放置
  * 
@@ -88,9 +88,25 @@ export default {
     })
 
     const startGame = () => {
-      isGameStarted.value = true
+      restartGame()
       console.log('Game started!')
       alert('游戏已开始，你执白棋')
+    }
+
+    const restartGame = () => {
+      // 前端重新去除棋子
+      const ctx = canvas.value.getContext('2d')
+      drawBoard(ctx)
+      // 前端重置棋盘信息
+      board.value = [...Array(19)].map(() => Array(19).fill(null))
+      // 前端重置游戏状态
+      isGameStarted.value = true
+      // 前端重置chessinfo
+      emit('reset-chessinfo')
+      // 后端重置棋盘
+      navigator.sendBeacon('http://localhost:8080/api/chess/reset') // 后端重置棋盘
+      console.log('Game reset!')
+      // alert('游戏已重置')
     }
 
     const setDifficulty = difficulty => {
@@ -121,10 +137,12 @@ export default {
     }
 
     return {
+      isGameStarted,
       canvas,
       placePiece,
       placeAIpiece,
       startGame,
+      restartGame,
       setDifficulty
     }
   },
@@ -144,6 +162,7 @@ export default {
         <option value="medium">一般</option>
         <option value="hard">困难</option>
       </select>
+      <button class="large-button" @click="restartGame">重新开始</button>
     </div>
   </div>
 </template>
@@ -158,7 +177,7 @@ export default {
   background-color: rgb(38, 63, 68);
   color: white;
   border: none;
-  padding: 15px 30px; /* 增大了 padding 来放大按钮 */
+  padding: 15px 18px; /* 增大了 padding 来放大按钮 */
   margin: 10px;
   cursor: pointer;
   font-size: 16px; /* 增大了字体大小 */

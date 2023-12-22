@@ -2,8 +2,8 @@
  * @Author: Yixuan Chen 2152824@tongji.edu.cn
  * @Date: 2023-12-05 08:19:08
  * @LastEditors: Yixuan Chen 2152824@tongji.edu.cn
- * @LastEditTime: 2023-12-11 12:16:55
- * @FilePath: \chess\vite.config.js
+ * @LastEditTime: 2023-12-22 23:41:25
+ * @FilePath: \GomokuFront\vite.config.js
  * @Description: 
  * 
  * Copyright (c) 2023 by YixuanChen 2152824@tongji.edu.cn, All Rights Reserved. 

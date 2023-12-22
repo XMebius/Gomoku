@@ -2,7 +2,7 @@
  * @Author: Yixuan Chen 2152824@tongji.edu.cn
  * @Date: 2023-12-05 08:28:14
  * @LastEditors: Yixuan Chen 2152824@tongji.edu.cn
- * @LastEditTime: 2023-12-22 20:55:43
+ * @LastEditTime: 2023-12-22 23:38:42
  * @FilePath: \GomokuFront\src\views\HomePage.vue
  * @Description: 渲染出棋盘，实现落子功能，将落子的坐标传给后端
  * 
@@ -39,12 +39,23 @@ const handlePiecePlaced = async data => {
     .then(response => {
       // 请求成功，返回响应数据
       console.log('Data returned successfully:', response.data)
-      const aiMove = response.data
+      const returnMove = response.data
       // 处理AI的移动
-      if (chessBoardRef.value && aiMove && aiMove.pos) {
-        chessBoardRef.value.placeAIpiece(aiMove.pos[0], aiMove.pos[1], 'black')
-        console.log("AI's move:", aiMove.pos)
-        chessInfo.value.push({ row: aiMove.pos[0], col: aiMove.pos[0], type: 'black' })
+      if (returnMove.role === 3) {
+        //人类获胜
+        alert('You win!')
+        chessBoardRef.value.isGameStarted = false
+        return
+      } else if (returnMove.role === 4 || returnMove.role === 2) {
+        //AI获胜
+        chessBoardRef.value.placeAIpiece(returnMove.pos[0], returnMove.pos[1], 'black')
+        console.log("AI's move:", returnMove.pos)
+        chessInfo.value.push({ row: returnMove.pos[0], col: returnMove.pos[0], type: 'black' })
+        if (returnMove.role === 4) {
+          alert('You lose!')
+          chessBoardRef.value.isGameStarted = false
+          return
+        }
       }
     })
     .catch(error => {
@@ -52,6 +63,15 @@ const handlePiecePlaced = async data => {
       console.error('Failed to send data:', error)
     })
 }
+
+const restInfo = () => {
+  chessInfo.value = []
+}
+
+window.addEventListener('beforeunload', event => {
+  chessBoardRef.value.restartGame()
+  event.NONE
+})
 </script>
 
 <template>
@@ -62,7 +82,11 @@ const handlePiecePlaced = async data => {
     <CodeDiagram />
     <div class="middle-page-container">
       <ChessInfo :info="chessInfo" />
-      <ChessBoard ref="chessBoardRef" @piece-placed="handlePiecePlaced" />
+      <ChessBoard
+        ref="chessBoardRef"
+        @piece-placed="handlePiecePlaced"
+        @reset-chessinfo="restInfo"
+      />
     </div>
     <DevelopNote />
   </div>
