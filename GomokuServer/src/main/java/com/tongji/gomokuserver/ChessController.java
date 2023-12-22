@@ -1,10 +1,8 @@
 package com.tongji.gomokuserver;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.Map;
 
 @RestController
@@ -16,16 +14,34 @@ public class ChessController {
         // 输出收到的数据结果
         System.out.println(move);
         System.out.println("Move received: " + move.getRole() + " " + move.getPos()[0] + " " + move.getPos()[1]);
+
         // 处理落子
         gameService.process(move.getPos()[0], move.getPos()[1], move.getRole());
+
         // 返回结果
         int [] nextStep = gameService.getPos();
         System.out.println("Next step: " + nextStep[0] + " " + nextStep[1]);
+
         // 返回数据到前端
+        if (gameService.isGameEnded()) {
+            Move endMove = new Move();
+            if(gameService.getWinner()==1){
+                endMove.setRole(3); // 表示人类胜利
+                endMove.setPos(-1,-1);
+                System.out.println("人类胜利，endMove设置成功");
+            }
+            else{
+                endMove.setRole(4); // 表示AI胜利
+                endMove.setPos(nextStep[0], nextStep[1]);
+                System.out.println("AI胜利，endMove设置成功");
+            }
+            return ResponseEntity.ok().body(endMove);
+        }
+        // 非结束状态
         Move aiMove = new Move();
         aiMove.setPos(nextStep[0], nextStep[1]);
         aiMove.setRole(2);  // AI黑棋
-
+        System.out.println("非结束状态，AI落子成功");
         return ResponseEntity.ok().body(aiMove);    // 返回AI的下一步棋
     }
 
@@ -36,6 +52,19 @@ public class ChessController {
         gameService.setDifficulty(difficulty);
         return ResponseEntity.ok().body("难度设置成功");
     }
+
+    @PostMapping("/api/chess/reset")
+    public ResponseEntity<?> resetGame() {
+        System.out.println("Game reset");
+        gameService.restGame();
+        return ResponseEntity.ok().body("Game reset successfully");
+    }
+
+//    @PostMapping("/api/page-unload")
+//    public void handlePageUnload() {
+//        System.out.println("Page unloaded");
+//        gameService.restGame();
+//    }
 }
 
 class Move {
