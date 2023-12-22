@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 public class GameService {
     private Board board = new Board();
     private int[] nextStep = new int[2];
+//    private Search search = new Search();
 
     public GameService() {
         // 初始化棋盘
@@ -24,5 +25,9 @@ public class GameService {
 
     public int[] getPos(){
         return this.nextStep;
+    }
+    public void setDifficulty(int difficulty) {
+        Search.depth = difficulty;
+        System.out.println("Difficulty set to " + difficulty);
     }
 }

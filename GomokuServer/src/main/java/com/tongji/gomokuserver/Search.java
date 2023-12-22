@@ -9,4 +9,8 @@ public class Search {
         result = Evaluate.evaluate(board);
         return result;
     }
+
+//    public void setDepth(int depth) {
+//        this.depth = depth;
+//    }
 }

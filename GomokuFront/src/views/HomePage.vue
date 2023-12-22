@@ -2,7 +2,7 @@
  * @Author: Yixuan Chen 2152824@tongji.edu.cn
  * @Date: 2023-12-05 08:28:14
  * @LastEditors: Yixuan Chen 2152824@tongji.edu.cn
- * @LastEditTime: 2023-12-19 16:59:50
+ * @LastEditTime: 2023-12-22 20:27:53
  * @FilePath: \GomokuFront\src\views\HomePage.vue
  * @Description: 渲染出棋盘，实现落子功能，将落子的坐标传给后端
  * 
@@ -39,10 +39,11 @@ const handlePiecePlaced = async data => {
     .then(response => {
       // 请求成功，返回响应数据
       console.log('Data sent successfully:', response.data)
-      const aiMove = response.data
+      const aiMove = response.datak
       // 处理AI的移动
       if (chessBoardRef.value && aiMove && aiMove.pos) {
         chessBoardRef.value.placeAIpiece(aiMove.pos[0], aiMove.pos[1], 'black')
+        console.log('Data sent back successfully', aiMove.pos)
         chessInfo.value.push({ row: aiMove.pos[0], col: aiMove.pos[0], type: 'black' })
       }
     })
