@@ -8,6 +8,7 @@ public class GameService {
     private int[] nextStep = new int[2];
     private boolean gameEnded = false;
     private int winner = 0;
+    private Search search = new Search();
     public GameService() {
         // 初始化棋盘
         board.initBoard();
@@ -27,7 +28,7 @@ public class GameService {
         }
         System.out.println("Player " + player + " made move at " + posx + " " + posy);
         // 计算下一步
-        this.nextStep = Search.minMax(board, 1);
+        this.nextStep = search.minMax(board, 1);
         board.makeMove(this.nextStep[0], nextStep[1], 2);
         if(board.isWin(2)) {
             gameEnded = true;
@@ -42,7 +43,7 @@ public class GameService {
     }
 
     public void setDifficulty(int difficulty) {
-        Search.depth = difficulty;
+        search.depth = difficulty;
         System.out.println("Difficulty set to " + difficulty);
     }
 
