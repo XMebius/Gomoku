@@ -6,8 +6,10 @@
 - [2. Introduciton](#2-introduciton)
   - [技术路线](#技术路线)
   - [项目结构](#项目结构)
-- [3. Running the code](#3-running-the-code)
-- [4. documentation](#4-documentation)
+- [3. Running](#3-running)
+  - [后端设置](#后端设置)
+  - [前端设置](#前端设置)
+- [4. Doc](#4-doc)
 - [License](#license)
 
 ## 1. Background
@@ -120,24 +122,56 @@
 
 其中，`GomokuFront`为前端项目，`GomokuServer`为后端项目，`document`为文档目录
 
-## 3. Running the code
+## 3. Running
 
-1. 后端
-requirement: **ItelliJ**
-打开`GomokuServer`项目，运行`GomokuServerApplication.java`即可
+要运行这个项目，你需要分别设置和启动前端和后端。以下是详细的步骤：
 
-2. 前端
-requirement: **pnpm**
-```bash
-cd GomokuFront
-pnpm dev
-```
-在浏览器打开链接，前端页面工作在`localhost:5173`端口
-服务端监听的端口是8080，前端页面通过`axios`向后端发送请求
+### 后端设置
 
-## 4. documentation
+1. **环境要求**:
+   - 确保你的电脑上安装了 IntelliJ IDEA。
+   - 推荐使用Java Development Kit (JDK) 版本为 17。
+
+2. **打开项目**:
+   - 启动 IntelliJ IDEA。
+   - 选择 “Open” 或 “Import Project”，然后浏览到下载的 `GomokuServer` 项目目录。
+
+3. **导入依赖**:
+   - IntelliJ IDEA 通常会自动识别 `pom.xml` 并导入 Maven 依赖。如果没有，你可以手动触发依赖导入。
+
+4. **启动服务端**:
+   - 寻找 `GomokuServerApplication.java` 文件。
+   - 右键点击文件并选择 `Run 'GomokuServerApplication'`。
+
+5. **验证运行**:
+   - 检查控制台输出，确保没有错误。
+   - 服务端将在 **8080** 端口监听请求。
+
+### 前端设置
+
+1. **环境要求**:
+   - 确保你的电脑上安装了 Node.js。
+   - 推荐使用 pnpm 作为包管理器。
+
+2. **安装依赖**:
+   - 打开命令行工具。
+   - 进入 `GomokuFront` 目录：`cd GomokuFront`。
+   - 执行 `pnpm install` 安装项目依赖。
+
+3. **启动前端服务**:
+   - 在 `GomokuFront` 目录下执行 `pnpm dev`。
+   - 这将启动开发服务器，并在 `localhost:5173` 上提供前端页面。
+
+4. **访问前端页面**:
+   - 打开浏览器并访问 `http://localhost:5173`。
+   - 你应该能看到项目的前端页面，并能与后端进行交互。
+
+确保在运行前端之前后端服务已经启动并运行。如果遇到任何连接问题，请检查后端服务是否正常运行以及端口是否正确配置。
 
 
+## 4. Doc
+
+==<待完善>==
 
 
 
