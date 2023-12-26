@@ -2,8 +2,8 @@
  * @Author: Yixuan Chen 2152824@tongji.edu.cn
  * @Date: 2023-12-12 08:44:56
  * @LastEditors: Yixuan Chen 2152824@tongji.edu.cn
- * @LastEditTime: 2023-12-22 23:30:05
- * @FilePath: \GomokuFront\src\components\ChessBoard.vue
+ * @LastEditTime: 2023-12-26 19:40:26
+ * @FilePath: \FoundationsOfAI\Gomoku\GomokuFront\src\components\ChessBoard.vue
  * @Description: 处理渲染棋盘，并处理棋子的放置
  * 
  * Copyright (c) 2023 by YixuanChen 2152824@tongji.edu.cn, All Rights Reserved. 
@@ -113,16 +113,16 @@ export default {
       let difficultyValue
       switch (difficulty) {
         case 'easy':
-          difficultyValue = 1
+          difficultyValue = 1 // 对应在search算法中搜索深度为1
           break
         case 'medium':
-          difficultyValue = 2
+          difficultyValue = 3 // 对应在search算法中搜索深度为3
           break
         case 'hard':
-          difficultyValue = 5
+          difficultyValue = 6 // 对应在search算法中搜索深度为6
           break
         default:
-          difficultyValue = 1 // 默认难度
+          difficultyValue = 4 // 默认难度
       }
 
       console.log('难度设置为:', difficultyValue)

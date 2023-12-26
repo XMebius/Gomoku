@@ -47,7 +47,7 @@ public class ChessController {
 
     @PostMapping("/api/chess/difficulty")
     public ResponseEntity<?> handleDifficultySetting(@RequestBody Map<String, Integer> difficultyMap) {
-        int difficulty = difficultyMap.getOrDefault("difficulty", 1); // 默认难度为1
+        int difficulty = difficultyMap.getOrDefault("difficulty", 1); // 简单：1；一般：2；困难：3
         System.out.println("Difficulty received: " + difficulty);
         gameService.setDifficulty(difficulty);
         return ResponseEntity.ok().body("难度设置成功");
