@@ -1,15 +1,13 @@
 package com.tongji.gomokuserver;
-
 public class Evaluate {
+    public static final int MAXN=1<<28;
+    public static final int MINN=-MAXN;
     public Evaluate() {
     }
 
-    public static int[] evaluate(Board board) {
+    public static int evaluate(Board board) {
         int[][] score = new int[board.N][board.N];
-        int[] result = new int[3];
-        result[0] = -1;
-        result[1] = -1;
-        result[2] = Integer.MIN_VALUE;
+        int result = Integer.MIN_VALUE;
 
         //每次都初始化下score评分数组
         for (int i = 0; i < board.N; i++) {
@@ -186,10 +184,8 @@ public class Evaluate {
         //从空位置中找到得分最大的位置
         for (int i = 0; i < Board.N; i++) {
             for (int j = 0; j < Board.N; j++) {
-                if (board.board[i][j] == 0 && score[i][j] > result[2]) {
-                    result[0] = i;
-                    result[1] = j;
-                    result[2] = score[i][j];
+                if (board.board[i][j] == 0 && score[i][j] > result) {
+                    result = score[i][j];
                 }
             }
         }
@@ -201,6 +197,7 @@ public class Evaluate {
     public static int tupleScore(int humanChessmanNum, int machineChessmanNum){
         //1.既有人类落子，又有机器落子，判分为0
         if(humanChessmanNum > 0 && machineChessmanNum > 0){
+            System.out.println("score: 0");
             return 0;
         }
         //2.全部为空，没有落子，判分为7
@@ -209,19 +206,19 @@ public class Evaluate {
         }
         //3.机器落1子，判分为35
         if(machineChessmanNum == 1){
-            return 35;
+            return -35;
         }
         //4.机器落2子，判分为800
         if(machineChessmanNum == 2){
-            return 800;
+            return -800;
         }
         //5.机器落3子，判分为15000
         if(machineChessmanNum == 3){
-            return 15000;
+            return -15000;
         }
         //6.机器落4子，判分为800000
         if(machineChessmanNum == 4){
-            return 800000;
+            return -800000;
         }
         //7.人类落1子，判分为15
         if(humanChessmanNum == 1){
@@ -237,9 +234,10 @@ public class Evaluate {
         }
         //10.人类落4子，判分为100000
         if(humanChessmanNum == 4){
-            return 100000;
+            return 800000;
         }
         return -1;//若是其他结果肯定出错了。这行代码根本不可能执行
     }
 }
+
 

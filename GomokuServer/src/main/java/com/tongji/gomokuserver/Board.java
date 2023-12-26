@@ -84,4 +84,8 @@ public class Board {
         }
         return false;
     }
+
+    public boolean isEnd(int x,int y){
+        return isWin(board[y][x]);
+    }
 }
