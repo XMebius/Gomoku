@@ -67,7 +67,10 @@
 |   |   |-- components
 |   |   |   |-- BackGround.vue
 |   |   |   |-- ChessBoard.vue
-|   |   |   `-- ChessInfo.vue
+|   |   |   |-- ChessInfo.vue
+|   |   |   |-- CodeDiagram.vue
+|   |   |   |-- DevelopNote.vue
+|   |   |   `-- TitleBlock.vue
 |   |   |-- main.js
 |   |   |-- router
 |   |   |   `-- index.js
@@ -87,7 +90,6 @@
 |   |   |   |           `-- gomokuserver
 |   |   |   |               |-- Board.java
 |   |   |   |               |-- ChessController.java
-|   |   |   |               |-- Evaluate.java
 |   |   |   |               |-- GameService.java
 |   |   |   |               |-- GomokuServerApplication.java
 |   |   |   |               `-- Search.java
@@ -172,8 +174,6 @@
 ## 4. Doc
 
 ==<待完善>==
-
-
 
 
 ## License
