@@ -3,6 +3,7 @@ package com.tongji.gomokuserver;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -60,11 +61,15 @@ public class ChessController {
         return ResponseEntity.ok().body("Game reset successfully");
     }
 
-//    @PostMapping("/api/page-unload")
-//    public void handlePageUnload() {
-//        System.out.println("Page unloaded");
-//        gameService.restGame();
-//    }
+    @PostMapping("/api/chess/undo")
+    public ResponseEntity<?> handleUndoMove(@RequestBody List<Move> moves) {
+        if (moves.size() != 2) {
+            return ResponseEntity.badRequest().body("Invalid move count for undo");
+        }
+        System.out.println("Undo moves received");
+        gameService.undoMoves(moves);
+        return ResponseEntity.ok().body("Undo successful");
+    }
 }
 
 class Move {

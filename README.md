@@ -39,6 +39,8 @@
 
 ## 2. Introduciton
 
+![cover](assets/效果.png)
+
 ### 技术路线
 
 | 前端 | 后端 | 

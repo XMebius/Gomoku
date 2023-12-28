@@ -2,8 +2,8 @@
  * @Author: Yixuan Chen 2152824@tongji.edu.cn
  * @Date: 2023-12-12 08:44:56
  * @LastEditors: Yixuan Chen 2152824@tongji.edu.cn
- * @LastEditTime: 2023-12-26 19:40:26
- * @FilePath: \FoundationsOfAI\Gomoku\GomokuFront\src\components\ChessBoard.vue
+ * @LastEditTime: 2023-12-28 15:52:59
+ * @FilePath: \GomokuFront\src\components\ChessBoard.vue
  * @Description: 处理渲染棋盘，并处理棋子的放置
  * 
  * Copyright (c) 2023 by YixuanChen 2152824@tongji.edu.cn, All Rights Reserved. 
@@ -16,11 +16,13 @@ import blackPiece from '../assets/black.png'
 import whitePiece from '../assets/white.png'
 
 export default {
+  props: ['info'],
   setup(props, { emit }) {
     const board = ref([...Array(19)].map(() => Array(19).fill(null)))
     const currentPiece = ref('white')
     const canvas = ref(null)
     const isGameStarted = ref(false)
+    // const hasUndone = ref(false)
 
     const drawBoard = ctx => {
       // 背景图
@@ -136,6 +138,42 @@ export default {
         })
     }
 
+    const undoMove = () => {
+      // if (hasUndone.value) {
+      //   alert('You can only undo once per turn')
+      //   return
+      // }
+      // console.log('perform undo move')
+      if (props.info.length < 2) {
+        console.log('Not enough moves to undo')
+        return
+      }
+      // 移除最后两步棋的视觉表示
+      const lastPlayerMove = props.info[props.info.length - 2]
+      const lastAIMove = props.info[props.info.length - 1]
+
+      console.log('lastPlayerMove:', lastPlayerMove)
+      console.log('lastAIMove:', lastAIMove)
+      // 更新棋盘数组
+      board.value[lastPlayerMove.row][lastPlayerMove.col] = null
+      board.value[lastAIMove.row][lastAIMove.col] = null
+
+      // 更新画布
+      const ctx = canvas.value.getContext('2d')
+      drawBoard(ctx) // 重绘棋盘
+      // 重绘除了最后两步的所有棋子
+      props.info.slice(0, -2).forEach(move => {
+        const pieceImg = new Image()
+        pieceImg.src = move.type === 'white' ? whitePiece : blackPiece
+        pieceImg.onload = () => {
+          ctx.drawImage(pieceImg, move.col * 20, move.row * 20, 20, 20)
+        }
+      })
+      // hasUndone.value = true
+
+      emit('undo-move')
+    }
+
     return {
       isGameStarted,
       canvas,
@@ -143,10 +181,10 @@ export default {
       placeAIpiece,
       startGame,
       restartGame,
-      setDifficulty
+      setDifficulty,
+      undoMove
     }
-  },
-  methods: {}
+  }
 }
 </script>
 
@@ -155,14 +193,19 @@ export default {
     <TitleBlock />
     <canvas ref="canvas" width="380" height="380" @click="placePiece"></canvas>
     <div class="game-controls">
-      <button class="large-button" @click="startGame">开始游戏</button>
-      <select class="large-button" @change="setDifficulty($event.target.value)">
-        <option disabled selected>难度设置</option>
-        <option value="easy">容易</option>
-        <option value="medium">一般</option>
-        <option value="hard">困难</option>
-      </select>
-      <button class="large-button" @click="restartGame">重新开始</button>
+      <div class="controls-row">
+        <button class="large-button" @click="startGame">开始游戏</button>
+        <select class="large-button" @change="setDifficulty($event.target.value)">
+          <option disabled selected>难度设置</option>
+          <option value="easy">容易</option>
+          <option value="medium">一般</option>
+          <option value="hard">困难</option>
+        </select>
+      </div>
+      <div class="controls-row">
+        <button class="large-button" @click="restartGame">重新开始</button>
+        <button class="large-button" @click="undoMove">悔棋一步</button>
+      </div>
     </div>
   </div>
 </template>
@@ -172,6 +215,7 @@ export default {
   z-index: 10;
   opacity: 0.72;
   order: 2; /* 显示顺序 */
+  /* 垂直排列 */
 }
 .large-button {
   background-color: rgb(38, 63, 68);
@@ -186,7 +230,16 @@ export default {
 .game-controls {
   display: flex;
   justify-content: center;
+  flex-direction: column;
+  /* align-items: center; */
 }
+
+.controls-row {
+  display: flex;
+  justify-content: center;
+  width: 100%; /* 确保每个控制行占满整个容器宽度 */
+}
+
 .game-controls select.large-button {
   -webkit-appearance: none; /* 移除默认样式 */
   appearance: none;

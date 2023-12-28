@@ -2,7 +2,7 @@
  * @Author: Yixuan Chen 2152824@tongji.edu.cn
  * @Date: 2023-12-05 08:28:14
  * @LastEditors: Yixuan Chen 2152824@tongji.edu.cn
- * @LastEditTime: 2023-12-22 23:38:42
+ * @LastEditTime: 2023-12-28 15:46:48
  * @FilePath: \GomokuFront\src\views\HomePage.vue
  * @Description: 渲染出棋盘，实现落子功能，将落子的坐标传给后端
  * 
@@ -50,7 +50,7 @@ const handlePiecePlaced = async data => {
         //AI获胜
         chessBoardRef.value.placeAIpiece(returnMove.pos[0], returnMove.pos[1], 'black')
         console.log("AI's move:", returnMove.pos)
-        chessInfo.value.push({ row: returnMove.pos[0], col: returnMove.pos[0], type: 'black' })
+        chessInfo.value.push({ row: returnMove.pos[0], col: returnMove.pos[1], type: 'black' })
         if (returnMove.role === 4) {
           alert('You lose!')
           chessBoardRef.value.isGameStarted = false
@@ -64,8 +64,31 @@ const handlePiecePlaced = async data => {
     })
 }
 
-const restInfo = () => {
+const restInfo = async () => {
   chessInfo.value = []
+}
+
+const handleUndoMove = async () => {
+  console.log('Undo move')
+  if (chessInfo.value.length < 2) {
+    console.log('Not enough moves to undo')
+    return
+  }
+  // chessInfo.value.splice(-2)
+  const lastTwoMoves = chessInfo.value.slice(-2).map(move => ({
+    x: move.row,
+    y: move.col,
+    role: move.type === 'black' ? 2 : 1
+  }))
+  console.log('lastTwoMoves:', lastTwoMoves)
+  chessInfo.value.splice(-2)
+
+  try {
+    await axios.post('http://localhost:8080/api/chess/undo', lastTwoMoves)
+    console.log('Undo move sent to server')
+  } catch (error) {
+    console.error('Failed to send undo move:', error)
+  }
 }
 
 window.addEventListener('beforeunload', event => {
@@ -83,9 +106,11 @@ window.addEventListener('beforeunload', event => {
     <div class="middle-page-container">
       <ChessInfo :info="chessInfo" />
       <ChessBoard
+        :info="chessInfo"
         ref="chessBoardRef"
         @piece-placed="handlePiecePlaced"
         @reset-chessinfo="restInfo"
+        @undo-move="handleUndoMove"
       />
     </div>
     <DevelopNote />

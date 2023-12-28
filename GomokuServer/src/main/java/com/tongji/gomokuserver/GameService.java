@@ -2,6 +2,8 @@ package com.tongji.gomokuserver;
 
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class GameService {
     private Board board = new Board();
@@ -53,6 +55,14 @@ public class GameService {
         gameEnded = false;
         winner = 0;
     }
+
+    public void undoMoves(List<Move> moves) {
+        for (Move move : moves) {
+            board.undoMove(move.getPos()[0], move.getPos()[1]);
+            System.out.println("Undo move at " + move.getPos()[0] + " " + move.getPos()[1]);
+        }
+    }
+
 
     public int getWinner() {
         return this.winner;

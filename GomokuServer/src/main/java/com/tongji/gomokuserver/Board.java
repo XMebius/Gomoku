@@ -41,6 +41,17 @@ public class Board {
         board[x][y] = player;
     }
 
+    public void undoMove(int x, int y) {
+        // 假设 0 代表棋盘上的空位
+        if (x >= 0 && x < N && y >= 0 && y < N) {
+            board[x][y] = 0;
+            // 打印棋盘
+            printBoard();
+        } else {
+            System.out.println("Invalid board position for undo: " + x + ", " + y);
+        }
+    }
+
     public boolean isWin(int player) {
         // Check rows
         for (int i = 0; i < N; i++) {
